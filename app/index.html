@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    
+    <title id="title">One brick office</title>
+    <script>
+      window.$ = window.jQuery = require('../node_modules/jquery/dist/jquery.js');
+  </script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="../node_modules/bootswatch/cosmo/bootstrap.css"/>
+    <link rel="stylesheet" href="./main.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="btn-toolbar">
+        <div class="btn-group mr-2">
+          <button class="btn btn-primary" onclick="document.execCommand('bold');" accesskey="B" data-tooltip="Bold">B</button>
+          <button class="btn btn-success" onclick="document.execCommand('underline');" accesskey="U" data-tooltip="Underline">U</button>
+          <button class="btn btn-warning" onclick="document.execCommand('italic');" accesskey="I" data-tooltip="Italic">I</button>
+
+        </div>
+      </div>
+      <div id="content" contenteditable="true"></div>
+    </div>
+    <script src="./menu.js"></script>
+  </body>
+
+</html>
