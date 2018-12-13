@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    
+    <title id="title">One brick office</title>
+    <script>
+      window.$ = window.jQuery = require('../node_modules/jquery/dist/jquery.js');
+  </script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="../node_modules/bootswatch/cosmo/bootstrap.css"/>
+    <link rel="stylesheet" href="./main.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <br/>
+      <div class="form-group">
+        <input id="link" class="form-control" placeholder="insert a link">
+        <input id="linkText" class="form-control" placeholder="Link text">
+      </div>
+      <button class="btn btn-primary" onclick="insertLink()">insert link</button>
+      <button class="btn btn-danger" onclick="window.close()">close</button>
+    </div>
+    <script src="./menu.js"></script>
+  </body>
+
+</html>

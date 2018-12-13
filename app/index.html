@@ -13,18 +13,40 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container" id="default">
+      <div class="col-md-8">
+        <a href="#" class="card text-white bg-primary col-md-3" style="max-width: 30rem; text-decoration: none;">
+          <div class="card-header"><h1>New File</h1></div>
+          <div class="card-body">
+            <p class="card-text">Create a new document(CTRL+N)</p>
+          </div>
+        </a>
+        <a href="#" onclick="openFile()" class="card text-white bg-success col-md-3" style="max-width: 30rem; text-decoration: none;">
+            <div class="card-header"><h1>Open file</h1></div>
+            <div class="card-body">
+              <p class="card-text">Open a file(CTRL+O)</p>
+            </div>
+          </a>
+      </div>
+    </div>
+    <div class="container" id="doc" style="display: none;">
       <div class="btn-toolbar">
         <div class="btn-group mr-2">
           <button class="btn btn-primary" onclick="document.execCommand('bold');" accesskey="B" data-tooltip="Bold">B</button>
           <button class="btn btn-success" onclick="document.execCommand('underline');" accesskey="U" data-tooltip="Underline">U</button>
           <button class="btn btn-warning" onclick="document.execCommand('italic');" accesskey="I" data-tooltip="Italic">I</button>
+          <button class="btn btn-primary" onclick="insertImage()" accesskey="M" data-tooltip="Insert Image">Img</button>
+          <button class="btn btn-warning" onclick="modal()" accesskey="p" data-tooltip="Insert a link">Link</button>
+          <button class="btn btn-success" onclick="document.execCommand('justifyCenter')" accesskey="E" data-tooltip="Center the text">C</button>
+          <button class="btn btn-success" onclick="document.execCommand('justifyFull')" accesskey="J" data-tooltip="Justify the text">J</button>
+          
 
         </div>
       </div>
-      <div id="content" contenteditable="true"></div>
+      <div id="content" contenteditable="true" class="container" width="750px"></div>
     </div>
     <script src="./menu.js"></script>
+    <script src="./modal.js"></script>
   </body>
 
 </html>
