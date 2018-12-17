@@ -17,18 +17,6 @@ app.on('ready', function() {
     icon: path.join(__dirname, `/app/images/one_brick_office_logo.png`)
    })
 
-// // When the action-update-label event is triggered (from the main process)
-// // Do something in the view
-// ipcRenderer.on('action-update-label', (event, arg) => {
-//     // Update the second interface or whatever you need to do
-//     // for example show an alert ...
-//     let res = document.execCommand('insertHTML', 0,  arg.link.anchor(arg.linkText))
-//     console.log(res);
-    
-//     // arg contains the data sent from the first view
-//     console.log(arg);
-// });
-
 app.on('window-all-closed', function() {
   app.quit();
 });
