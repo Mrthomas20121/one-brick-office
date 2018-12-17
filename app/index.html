@@ -15,7 +15,7 @@
   <body>
     <div class="container" id="default">
       <div class="col-md-8">
-        <a href="#" class="card text-white bg-primary col-md-3" style="max-width: 30rem; text-decoration: none;">
+        <a href="#" onclick="newFile()" class="card text-white bg-primary col-md-3" style="max-width: 30rem; text-decoration: none;">
           <div class="card-header"><h1>New File</h1></div>
           <div class="card-body">
             <p class="card-text">Create a new document(CTRL+N)</p>
@@ -43,7 +43,8 @@
 
         </div>
       </div>
-      <div id="content" contenteditable="true" class="container" width="750px"></div>
+      <div id="content" contenteditable="true" class="container" width="300px"  height="700px"></div>
+	  <br/>
     </div>
     <script src="./menu.js"></script>
     <script src="./modal.js"></script>

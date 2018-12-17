@@ -28,7 +28,7 @@ const m1 = new MenuItem (
       {
         label: 'close',
         accelerator : 'ctrl+w',
-        click () { location = 'Closed.html' }
+        click () { location.reload() }
       }
     ]
   }
@@ -71,7 +71,7 @@ const saveFile = () => {
   let data = document.getElementById('content');
   let r = Buffer.from(data.innerHTML).toString('base64')
   fs.writeFileSync(fileName, r);
-
+  document.getElementById('title').innerHTML = `one brick office | ${fileName}`
 });  
 }
 
@@ -101,6 +101,13 @@ const insertImage = () => {
     let res = document.execCommand('insertHTML', 0,  img)
     console.log(res);
   })
+}
+
+const newFile = () => {
+  document.getElementById('default').style.display = 'none'
+  document.getElementById('doc').style.display = 'block'
+  document.getElementById('content').innerHTML = ''
+  document.getElementById('title').innerHTML = `one brick office | unsaved file(*)`
 }
 
 const insertLink = () => {
