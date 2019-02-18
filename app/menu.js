@@ -31,8 +31,14 @@ const m1 = new MenuItem (
         click () { saveFileAs() }
       },
       {
+        label: 'Export file as',
+        accelerator : 'ctrl+alt+e',
+        click () { exportFile() }
+      },
+      {
         label: 'Reload app',
         accelerator : 'alt+r',
+        visible:false,
         click (MenuItem, browserWindow, event) { location.reload()/* console.log(event)*/ }
       },
       {
@@ -92,25 +98,37 @@ const saveFileAs = () => {
 
   ]}, (fileName) => {
     
-  if (typeof fileName === "undefined") return;
-    
-  let data = document.getElementById('content');
-  let r = Buffer.from(data.innerHTML).toString('base64')
-  fs.writeFileSync(fileName, r);
-  document.getElementById('title').innerHTML = `one brick office | ${fileName}`
-});  
+    if (typeof fileName === "undefined") return;
+      
+    let data = document.getElementById('content');
+    let r = Buffer.from(data.innerHTML).toString('base64')
+    fs.writeFileSync(fileName, r);
+    document.getElementById('title').innerHTML = `one brick office | ${fileName}`
+  });  
 }
 
 const exportFile = () => {
   
   var pdf = require('html-pdf');
-  var html = fs.readFileSync(fileName, 'utf8');
   var options = { format: 'Letter' };
   
-  pdf.create(html, options).toFile('./businesscard.pdf', function(err, res) {
-    if (err) return console.log(err);
-    console.log(res); // { filename: '/app/businesscard.pdf' }
-  });
+  dialog.showSaveDialog({ filters: [
+
+    { name: 'pdf', extensions: ['pdf'] },
+    { name: 'any', extensions: ['*']}
+
+  ]}, (fileName) => {
+    
+    if (typeof fileName === "undefined") return;
+      
+    let data = document.getElementById('content');
+
+    pdf.create(data.innerHTML, options).toFile('./businesscard.pdf', function(err, res) {
+      if (err) return console.log(err);
+      console.log(res); // { filename: '/app/businesscard.pdf' }
+    });    
+  }); 
+
 }
 
 const insertImage = () => {
