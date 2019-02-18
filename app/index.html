@@ -43,9 +43,15 @@
 
         </div>
       </div>
-      <div id="content" contenteditable="true" class="container" width="300px"  height="700px"></div>
+      <div id="content" contenteditable="true" class="container" width="300px"  height="1000px"></div>
 	  <br/>
     </div>
+    <script>
+      const { ipcRenderer } = require('electron');
+      ipcRenderer.on('action-update-label', (event, arg) => {
+        document.getElementById('content').innerHTML = document.getElementById('content').innerHTML.concat(`<a href="${arg.link}">${arg.linkText}</a>`)
+      })
+    </script>
     <script src="./menu.js"></script>
     <script src="./modal.js"></script>
   </body>

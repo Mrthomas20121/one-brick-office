@@ -1,5 +1,6 @@
 const modal = () => {
-  const { remote , ipcMain } = require('electron');
+  const { remote } = require('electron');
+  const ipcMain = remote.ipcMain;
   const path = require('path');
   
   const winModal = new remote.BrowserWindow({
@@ -9,6 +10,7 @@ const modal = () => {
     parent: remote.getCurrentWindow(), 
     modal: true, 
     show: false,
+    frame:false,
     icon:path.join(__dirname, `/app/images/one_brick_office_logo.png`),
     //frame:false
   });
