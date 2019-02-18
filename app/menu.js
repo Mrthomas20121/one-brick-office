@@ -21,20 +21,45 @@ const m1 = new MenuItem (
         click () { openFile() }
       },
       {
-        label: 'Save file as',
+        label: 'Save file',
         accelerator : 'ctrl+s',
         click () { saveFile() }
       },
       {
-        label: 'close',
-        accelerator : 'ctrl+w',
-        click () { location.reload() }
+        label: 'Save file as',
+        accelerator : 'alt+e',
+        click () { saveFileAs() }
+      },
+      {
+        label: 'Reload app',
+        accelerator : 'alt+r',
+        click (MenuItem, browserWindow, event) { location.reload()/* console.log(event)*/ }
+      },
+      {
+        label: 'Close app',
+        accelerator : 'ctrl+alt+w',
+        click (MenuItem, browserWindow, event) { window.close() }
+      },
+      {
+        label: 'Center Text',
+        visible:false,
+        accelerator : 'ctrl+E',
+        click (MenuItem, browserWindow, event) { document.execCommand('justifyCenter') }
       }
     ]
   }
 )
 
 var fs = require('fs');
+
+const saveFile = () => {
+  if(typeof window.file === 'string') {
+    let data = document.getElementById('content');
+    let res = Buffer.from(data.innerHTML).toString('base64')
+    fs.writeFileSync(window.file, res)
+  }
+  else saveFileAs()
+}
 
 const openFile = () => {
   dialog.showOpenDialog({ filters: [
@@ -53,12 +78,13 @@ const openFile = () => {
     document.getElementById('content').innerHTML = Buffer.from(data, 'base64').toString('utf-8');
     document.getElementById('default').style.display = 'none'
     document.getElementById('doc').style.display = 'block'
+    window['file'] = fileName
    })
 })
 
 }
 
-const saveFile = () => {
+const saveFileAs = () => {
   dialog.showSaveDialog({ filters: [
 
     { name: 'one brick office file', extensions: ['obo'] },
@@ -124,6 +150,7 @@ let Data = {
 
 // Trigger the event listener action to this event in the renderer process and send the data
 ipcRenderer.send('request-update-label-in-second-window', Data);
+window.close()
 }
 
 const menu = new Menu()
