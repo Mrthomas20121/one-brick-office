@@ -1,0 +1,9 @@
+{
+  "text": "test",
+  "color": "dark_blue",
+  "bold": false,
+  "underlined": false,
+  "strikethrough": false,
+  "obfuscated": false,
+  "selector": "@a"
+}

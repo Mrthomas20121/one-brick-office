@@ -6,6 +6,12 @@ tt({
   position:'bottom'
 })
 
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+const base = config.base;
+const extensions = config.extensions;
+const ext_names = config.names;
+
 const m1 = new MenuItem (
   {
     label: 'Files',
@@ -56,12 +62,10 @@ const m1 = new MenuItem (
   }
 )
 
-var fs = require('fs');
-
 const saveFile = () => {
   if(typeof window.file === 'string') {
     let data = document.getElementById('content');
-    let res = Buffer.from(data.innerHTML).toString('base64')
+    let res = Buffer.from(data.innerHTML, 'utf8').toString(base)
     fs.writeFileSync(window.file, res)
   }
   else saveFileAs()
@@ -70,22 +74,20 @@ const saveFile = () => {
 const openFile = () => {
   dialog.showOpenDialog({ filters: [
 
-  { name: 'one brick office file', extensions: ['obo'] }
+  { name: ext_names, extensions: extensions },
+  { name: 'any', extensions: ['*']}
    
   ]}, function(fileNames) {
  
-  if (typeof fileNames === "undefined") return;
+  if (typeof fileNames === 'undefined') return;
  
   var fileName = fileNames[0];
-  fs.readFile(fileName, 'utf-8', (err, data) => {
-    if(err) throw err;
-    
-    document.getElementById('title').innerHTML = `one brick office | ${fileName}`
-    document.getElementById('content').innerHTML = Buffer.from(data, 'base64').toString('utf-8');
-    document.getElementById('default').style.display = 'none'
-    document.getElementById('doc').style.display = 'block'
-    window['file'] = fileName
-   })
+  var data = fs.readFileSync(fileName, 'utf-8')
+  document.getElementById('title').innerHTML = `one brick office | ${fileName}`
+  document.getElementById('content').innerHTML = Buffer.from(data, base).toString('utf-8');
+  document.getElementById('default').style.display = 'none'
+  document.getElementById('doc').style.display = 'block'
+  window['file'] = fileName
 })
 
 }
@@ -93,15 +95,15 @@ const openFile = () => {
 const saveFileAs = () => {
   dialog.showSaveDialog({ filters: [
 
-    { name: 'one brick office file', extensions: ['obo'] },
+    { name: ext_names, extensions: extensions },
     { name: 'any', extensions: ['*']}
 
   ]}, (fileName) => {
     
-    if (typeof fileName === "undefined") return;
+    if (typeof fileName === 'undefined') return;
       
     let data = document.getElementById('content');
-    let r = Buffer.from(data.innerHTML).toString('base64')
+    let r = Buffer.from(data.innerHTML, 'utf8').toString(base)
     fs.writeFileSync(fileName, r);
     document.getElementById('title').innerHTML = `one brick office | ${fileName}`
   });  
@@ -119,11 +121,11 @@ const exportFile = () => {
 
   ]}, (fileName) => {
     
-    if (typeof fileName === "undefined") return;
+    if (typeof fileName === 'undefined') return;
       
     let data = document.getElementById('content');
 
-    pdf.create(data.innerHTML, options).toFile('./businesscard.pdf', function(err, res) {
+    pdf.create(data.innerHTML, options).toFile(fileName, function(err, res) {
       if (err) return console.log(err);
       console.log(res); // { filename: '/app/businesscard.pdf' }
     });    
@@ -138,7 +140,7 @@ const insertImage = () => {
      
     ]}, function(fileNames) {
    
-    if (typeof fileNames === "undefined") return;
+    if (typeof fileNames === 'undefined') return;
    
     let fileName = fileNames[0];
     let img = `<img src="${fileName}"/>`

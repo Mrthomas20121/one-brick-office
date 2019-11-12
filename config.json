@@ -1,0 +1,7 @@
+{
+  "base": "base64",
+  "extensions:": [
+    "brick"
+  ],
+  "name": "brick files"
+}
