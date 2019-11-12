@@ -9,8 +9,10 @@ tt({
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const base = config.base;
-const extensions = config.extensions;
-const ext_names = config.names;
+// extensions
+const extensions = ['brick'];
+// extension name
+const ext_names = 'brick files';
 
 const m1 = new MenuItem (
   {
@@ -87,7 +89,7 @@ const openFile = () => {
   document.getElementById('content').innerHTML = Buffer.from(data, base).toString('utf-8');
   document.getElementById('default').style.display = 'none'
   document.getElementById('doc').style.display = 'block'
-  window['file'] = fileName
+  window['file'] = fileName;
 })
 
 }
@@ -101,7 +103,8 @@ const saveFileAs = () => {
   ]}, (fileName) => {
     
     if (typeof fileName === 'undefined') return;
-      
+    
+    window['file'] = fileName;
     let data = document.getElementById('content');
     let r = Buffer.from(data.innerHTML, 'utf8').toString(base)
     fs.writeFileSync(fileName, r);

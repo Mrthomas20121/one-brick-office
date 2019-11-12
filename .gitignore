@@ -1,9 +1,18 @@
+# ignore node_modules and other folders
 node_modules
-.idea
 components
+
+# ignore test files created by the app
+*.brick
+*.obo
+*.pdf
+*.bat
+
+# ignore cached files
 _site
 *.lock
 .sass-cache/
 .DS_Store
-*.bat
+.idea
+# ignore code-workspace files
 *.code-workspace
