@@ -11,6 +11,7 @@ const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const base = config.base;
 // extensions
 const extensions = ['brick'];
+const import_extensions = ['docx'];
 // extension name
 const ext_names = 'brick files';
 
@@ -27,6 +28,11 @@ const m1 = new MenuItem (
         label: 'Open file',
         accelerator : 'ctrl+o',
         click () { openFile() }
+      },
+      {
+        label: 'Import word file',
+        accelerator : 'ctrl+i',
+        click () { importFile() }
       },
       {
         label: 'Save file',
@@ -66,9 +72,8 @@ const m1 = new MenuItem (
 
 const saveFile = () => {
   if(typeof window.file === 'string') {
-    let data = document.getElementById('content');
-    let res = Buffer.from(data.innerHTML, 'utf8').toString(base)
-    fs.writeFileSync(window.file, res)
+    save();
+    document.getElementById('title').innerHTML = `one brick office | ${file}`
   }
   else saveFileAs()
 }
@@ -94,6 +99,27 @@ const openFile = () => {
 
 }
 
+const importFile = () => {
+  dialog.showOpenDialog({ filters: [
+
+  { name: 'Microsoft Word File', extensions: import_extensions },
+  { name: 'any', extensions: ['*']}
+   
+  ]}, function(fileNames) {
+ 
+  if (typeof fileNames === 'undefined') return;
+ 
+  var fileName = fileNames[0];
+  var data = fs.readFileSync(fileName, 'utf-8')
+  document.getElementById('title').innerHTML = `one brick office | ${fileName}`
+  // load docx content from file
+  //document.getElementById('content').innerHTML = Buffer.from(data, base).toString('utf-8');
+  document.getElementById('default').style.display = 'none'
+  document.getElementById('doc').style.display = 'block'
+  window['file'] = fileName;
+})
+}
+
 const saveFileAs = () => {
   dialog.showSaveDialog({ filters: [
 
@@ -105,9 +131,7 @@ const saveFileAs = () => {
     if (typeof fileName === 'undefined') return;
     
     window['file'] = fileName;
-    let data = document.getElementById('content');
-    let r = Buffer.from(data.innerHTML, 'utf8').toString(base)
-    fs.writeFileSync(fileName, r);
+    save()
     document.getElementById('title').innerHTML = `one brick office | ${fileName}`
   });  
 }
@@ -134,6 +158,30 @@ const exportFile = () => {
     });    
   }); 
 
+}
+
+function getAppVersion() {
+  return require('../package.json').version
+}
+function getAuthor() {
+  author = null
+  if(typeof window.author != "undefined")
+    author = window.author
+  return author
+}
+
+function jsonInfo() {
+  return {
+    author:getAuthor(),
+    app_version:getAppVersion()
+  }
+}
+
+function save() {
+  let data = document.getElementById('content');
+  html = `${data.innerHTML}<script> const fileInformation = ${JSON.stringify(jsonInfo())}</script>`
+  let res = Buffer.from(html, 'utf8').toString(base)
+  fs.writeFileSync(window.file, res)
 }
 
 const insertImage = () => {
