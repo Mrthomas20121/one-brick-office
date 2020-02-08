@@ -39,8 +39,6 @@
           <button class="btn btn-warning" onclick="modal()" accesskey="p" data-tooltip="Insert a link">Link</button>
           <button class="btn btn-success" onclick="document.execCommand('justifyCenter')" accesskey="E" data-tooltip="Center the text">C</button>
           <button class="btn btn-success" onclick="document.execCommand('justifyFull')" accesskey="J" data-tooltip="Justify the text">J</button>
-          
-
         </div>
       </div>
       <div id="content" contenteditable="true" class="container" width="300px"  height="1000px"></div>
@@ -48,9 +46,10 @@
     </div>
     <script>
       const { ipcRenderer } = require('electron');
-      ipcRenderer.on('action-update-label', (event, arg) => {
-        document.getElementById('content').innerHTML = document.getElementById('content').innerHTML.concat(`<a href="${arg.link}">${arg.linkText}</a>`)
-      })
+      ipcRenderer.on('link', (event, arg) => {
+        console.log(JSON.stringify(arg, null, 2))
+        document.getElementById('content').innerHTML = document.getElementById('content').innerHTML.concat(`<a href="${arg.link}">${arg.text}</a>`)
+      });
     </script>
     <script src="./menu.js"></script>
     <script src="./modal.js"></script>

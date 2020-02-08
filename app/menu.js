@@ -11,11 +11,11 @@ const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const base = config.base;
 // extensions
 const extensions = ['brick'];
-const import_extensions = ['docx'];
+const import_extensions = ['docx', 'doc'];
 // extension name
 const ext_names = 'brick files';
 
-const m1 = new MenuItem (
+const menuFiles = new MenuItem (
   {
     label: 'Files',
     submenu:[
@@ -89,9 +89,9 @@ const openFile = () => {
   if (typeof fileNames === 'undefined') return;
  
   var fileName = fileNames[0];
-  var data = fs.readFileSync(fileName, 'utf-8')
+  var data = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
   document.getElementById('title').innerHTML = `one brick office | ${fileName}`
-  document.getElementById('content').innerHTML = Buffer.from(data, base).toString('utf-8');
+  document.getElementById('content').innerHTML = Buffer.from(data.content, base).toString('utf-8');
   document.getElementById('default').style.display = 'none'
   document.getElementById('doc').style.display = 'block'
   window['file'] = fileName;
@@ -179,9 +179,15 @@ function jsonInfo() {
 
 function save() {
   let data = document.getElementById('content');
-  html = `${data.innerHTML}<script> const fileInformation = ${JSON.stringify(jsonInfo())}</script>`
-  let res = Buffer.from(html, 'utf8').toString(base)
-  fs.writeFileSync(window.file, res)
+  let html = data.innerHTML
+  let encodedHtml = Buffer.from(html, 'utf8').toString(base);
+  let info = JSON.stringify(jsonInfo(), null, 2)
+  let encodedInfo = Buffer.from(info, 'utf8').toString(base);
+  let obj = {
+    info: encodedInfo,
+    content:encodedHtml
+  }
+  fs.writeFileSync(window.file, JSON.stringify(obj, null, 2), { encoding:'utf8' })
 }
 
 const insertImage = () => {
@@ -210,21 +216,19 @@ const newFile = () => {
 const insertLink = () => {
   const { ipcRenderer } = require('electron');
 
-// Some data that will be sent to the main process
-// Feel free to modify the object as you wish !
-let link = document.getElementById('link');
-let linkText = document.getElementById('linkText');
-let Data = {
-    link,
-    linkText
-};
+  let link = document.getElementById('link');
+  let linkText = document.getElementById('linkText');
+  let Data = {
+      link:link.value,
+      text:linkText.value
+  };
 
-// Trigger the event listener action to this event in the renderer process and send the data
-ipcRenderer.send('request-update-label-in-second-window', Data);
-window.close()
+  // Trigger the event listener action to this event in the renderer process and send the data
+  ipcRenderer.send('insert_link', Data);
+  window.close()
 }
 
 const menu = new Menu()
 
-menu.append(m1)
+menu.append(menuFiles)
 remote.getCurrentWindow().setMenu(menu);
