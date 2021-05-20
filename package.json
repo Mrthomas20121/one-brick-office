@@ -4,7 +4,7 @@
   "description": "a simple Word editor",
   "main": "app.js",
   "dependencies": {
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "jquery": "^3.2.1",
 	"electron-tooltip": "^1.1.5",
 	"electron-context-menu": "^0.9.1",
